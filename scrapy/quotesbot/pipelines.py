@@ -4,10 +4,28 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 
-# useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
+import pymongo
+import os
+from dotenv import load_dotenv
 
 
-class QuotesbotPipeline:
+load_dotenv()   # loads .env into os.environ
+
+class MongoPipeline:
+    def open_spider(self, spider):
+        uri = os.getenv("MONGO_URI")
+        db_name = os.getenv("MONGO_DB", "quotesdb")
+        self.client = pymongo.MongoClient(uri)
+        self.db = self.client[db_name]
+        # Create index to avoid duplicate quotes
+        self.db["quotes"].create_index("text", unique=True)
+
+    def close_spider(self, spider):
+        self.client.close()
+
     def process_item(self, item, spider):
+        try:
+            self.db["quotes"].insert_one(dict(item))
+        except pymongo.errors.DuplicateKeyError:
+            pass # skip if quote already exists
         return item

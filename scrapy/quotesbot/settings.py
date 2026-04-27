@@ -58,9 +58,12 @@ DOWNLOAD_DELAY = 1
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "quotesbot.pipelines.QuotesbotPipeline": 300,
-#}
+ITEM_PIPELINES = {
+    "quotesbot.pipelines.MongoPipeline": 300,
+}
+# Be polite — wait 1 second between requests
+DOWNLOAD_DELAY = 1
+ROBOTSTXT_OBEY = True
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
