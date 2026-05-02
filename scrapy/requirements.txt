@@ -1,0 +1,5 @@
+scrapy
+pymongo
+python-dotenv
+pandas
+jupyter
