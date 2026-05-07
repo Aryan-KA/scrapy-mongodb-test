@@ -3,3 +3,6 @@ pymongo
 python-dotenv
 pandas
 jupyter
+streamlit
+plotly
+textblob
